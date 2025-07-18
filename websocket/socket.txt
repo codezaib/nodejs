@@ -1,0 +1,63 @@
+=> 👂 Event Listeners
+| Function                                 | Description                          |
+| ---------------------------------------- | ------------------------------------ |
+| `io.on("connection", socket => { ... })` | Triggered when a client connects     |
+| `socket.on("event", callback)`           | Listen to a custom event from client |
+| `socket.on("disconnect", fn)`            | Triggered when client disconnects    |
+| `socket.onAny(fn)`                       | Listen to any event                  |
+
+=> 📤 Emit Events
+| Function                               | Description                           |
+| -------------------------------------- | ------------------------------------- |
+| `socket.emit("event", data)`           | Send to the **current** client        |
+| `socket.broadcast.emit("event", data)` | Send to **all except current** client |
+| `io.emit("event", data)`               | Send to **all connected** clients     |
+| `io.to(room).emit("event", data)`      | Send to **clients in a room**         |
+
+=> 🧑‍🤝‍🧑 Rooms
+| Function                  | Description               |
+| ------------------------- | ------------------------- |
+| `socket.join("room")`     | Add client to a room      |
+| `socket.leave("room")`    | Remove client from room   |
+| `io.to("room").emit(...)` | Emit to clients in a room |
+
+=> 🔍 Client Info
+| Property / Method                  | Description                                         |
+| ---------------------------------- | --------------------------------------------------- |
+| `socket.id`                        | Unique ID for the connected socket                  |
+| `socket.handshake`                 | Info from initial connection (headers, query, etc.) |
+| `io.sockets.sockets.get(socketId)` | Get socket instance by ID                           |
+| `io.sockets.adapter.rooms`         | All active rooms and their sockets                  |
+
+=> 📤 Emit Events
+| Function                          | Description                          |
+| --------------------------------- | ------------------------------------ |
+| `socket.emit("event", data)`      | Send event to server                 |
+| `socket.emit("event", data, ack)` | Send with callback (acknowledgement) |
+
+=> 👂 Listen to Events
+| Function                       | Description                  |
+| ------------------------------ | ---------------------------- |
+| `socket.on("event", callback)` | Listen for event from server |
+| `socket.off("event")`          | Remove listener              |
+| `socket.onAny(fn)`             | Listen to all events         |
+
+=> 🔌 Connection Events
+| Event             | Description              |
+| ----------------- | ------------------------ |
+| `"connect"`       | When connected to server |
+| `"disconnect"`    | When disconnected        |
+| `"reconnect"`     | On reconnection          |
+| `"connect_error"` | On connection failure    |
+
+// client
+socket.emit("myEvent", data, (response) => {
+  console.log("Server responded:", response);
+});
+
+// server
+socket.on("myEvent", (data, callback) => {
+  // do something...
+  callback("OK"); // sends back to client
+});
+
